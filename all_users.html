@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - FitBuddy</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="navbar">
+        <h2>FitBuddy Pro - Admin</h2>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+        </div>
+    </div>
+    <div class="container admin-container">
+        <h1>All Users & Workout Plans</h1>
+        
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Age</th>
+                        <th>Weight</th>
+                        <th>Goal</th>
+                        <th>Intensity</th>
+                        <th>Original Plan</th>
+                        <th>Updated Plan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        {% for wp in user.workout_plans %}
+                        <tr>
+                            <td><strong>{{ user.username }}</strong></td>
+                            <td>{{ user.age }}</td>
+                            <td>{{ user.weight }}</td>
+                            <td>{{ user.goal }}</td>
+                            <td><span class="badge">{{ user.intensity }}</span></td>
+                            <td class="plan-cell">
+                                <div class="scroll-content">
+                                    {{ wp.original_plan[:150] }}...
+                                </div>
+                            </td>
+                            <td class="plan-cell">
+                                <div class="scroll-content">
+                                    {% if wp.updated_plan %}
+                                        {{ wp.updated_plan[:150] }}...
+                                    {% else %}
+                                        <em style="color: #888">No updates</em>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                    {% if not users %}
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 2rem;">No users found in database.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

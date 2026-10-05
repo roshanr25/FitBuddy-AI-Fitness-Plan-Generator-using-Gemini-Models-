@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Workout Plan - FitBuddy</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Marked library to parse Markdown from Gemini AI -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <h2>FitBuddy Pro</h2>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Home</a>
+            <a href="/view-all-users" class="nav-link">Admin Dashboard</a>
+        </div>
+    </div>
+    
+    <div class="container main-content">
+        <div class="user-header">
+            <h1>Hey <span class="highlight">{{ username }}</span>, here is your plan!</h1>
+            <p class="user-stats">Goal: <strong>{{ goal }}</strong> | Intensity: <strong>{{ intensity }}</strong> | Weight: <strong>{{ weight }}</strong> | Height: <strong>{{ height }}</strong> | Age: <strong>{{ age }}</strong></p>
+        </div>
+
+        <div class="grid-layout">
+            <div class="plan-card">
+                <h2>🏋️ Your 7-Day Workout Plan</h2>
+                <!-- Hidden div with the raw markdown string -->
+                <div id="workout-content" style="display:none;">{{ plan }}</div>
+                <div id="parsed-workout" class="markdown-body"></div>
+            </div>
+
+            <div class="right-panel">
+                <div class="tip-card gradient-card">
+                    <h2>💡 Nutrition & Recovery Tip</h2>
+                    <div id="tip-content" style="display:none;">{{ tip }}</div>
+                    <div id="parsed-tip" class="markdown-body"></div>
+                </div>
+
+                <div class="feedback-card">
+                    <h2>🔄 Adjust Your Plan</h2>
+                    <p>Not quite right? Ask the AI to tweak it!</p>
+                    <form action="/submit-feedback" method="post">
+                        <input type="hidden" name="wp_id" value="{{ wp_id }}">
+                        <div class="form-group">
+                            <input type="text" name="feedback" placeholder="E.g., add more cardio, include yoga..." required>
+                        </div>
+                        <button type="submit" class="submit-btn outline-btn">Update Plan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse the markdown string from backend into proper HTML on frontend
+        document.getElementById('parsed-workout').innerHTML = marked.parse(document.getElementById('workout-content').innerText);
+        document.getElementById('parsed-tip').innerHTML = marked.parse(document.getElementById('tip-content').innerText);
+    </script>
+</body>
+</html>
